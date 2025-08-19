@@ -4,6 +4,7 @@ from flask import render_template
 from flask import redirect
 from flask import url_for
 from pymongo import MongoClient
+from bson import ObjectId
 
 sample = Flask(__name__)
 
@@ -11,10 +12,6 @@ client = MongoClient("mongodb://mongo:27017/")
 mydb = client["ipa2025_db"]
 mycol = mydb["routers"]
 
-ttt = mycol.find()
-row = []
-for i in ttt:
-        row.append(i['_id'])
 @sample.route("/")
 def main():
     data = mycol.find()
@@ -31,13 +28,10 @@ def add_comment():
         mycol.insert_one(mydict)
     return redirect(url_for("main"))
 
-@sample.route("/delete", methods=["POST"])
-def delete_comment():
+@sample.route("/delete/<id>", methods=["POST"])
+def delete_comment(id):
     try:
-        idx = int(request.form.get("idx"))
-        print(idx)
-        myquery = {'_id': row[idx]}
-        mycol.delete_one(myquery)
+        mycol.delete_one({"_id": ObjectId(id)})
     except Exception:
         pass
     return redirect(url_for("main"))

@@ -17,7 +17,7 @@
     {% for comment in data %}
       <li>
 	       {{ comment.ip }} - {{ comment.username }}
-         <form method="POST" action="/delete" style="display:inline">
+         <form method="POST" action="/delete/{{ comment._id }}" style="display:inline">
            <input type="hidden" name="idx" value="{{ loop.index0 }}">
            <button type="submit">Delete</button>
          </form>
