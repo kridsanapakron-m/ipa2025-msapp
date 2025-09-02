@@ -38,6 +38,7 @@ def add_comment():
 
     if ip and username and password:
         info = {"ip": ip, "username": username, "password": password}
+        mycol.insert_one(info)
     return redirect(url_for("main"))
 
 
@@ -45,7 +46,7 @@ def add_comment():
 def delete_comment():
     try:
         idx = int(request.form.get("idx"))
-        col = {'_id': data[idx]['_id']}
+        mycol.delete_one({"_id": idx})
     except Exception:
         pass
     return redirect(url_for("main"))
@@ -57,8 +58,7 @@ def router_detail(ip):
     status_list = list(mycol2.find(
         {"router_ip": ip}).sort("timestamp", -1).limit(3))
     print(status_list, flush=True)
-    return render_template("router_detail.html", router=router
-                           , status_list=status_list)
+    return render_template("router_detail.html", router=router, status_list=status_list)
 
 
 if __name__ == "__main__":
