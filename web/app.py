@@ -4,7 +4,6 @@ from flask import render_template
 from flask import redirect
 from flask import url_for
 from pymongo import MongoClient
-from bson import ObjectId
 import os
 
 sample = Flask(__name__)
@@ -39,7 +38,6 @@ def add_comment():
 
     if ip and username and password:
         info = {"ip": ip, "username": username, "password": password}
-        res = mycol.insert_one(info)
     return redirect(url_for("main"))
 
 
@@ -48,7 +46,6 @@ def delete_comment():
     try:
         idx = int(request.form.get("idx"))
         col = {'_id': data[idx]['_id']}
-        res = mycol.delete_one(col)
     except Exception:
         pass
     return redirect(url_for("main"))
@@ -60,7 +57,8 @@ def router_detail(ip):
     status_list = list(mycol2.find(
         {"router_ip": ip}).sort("timestamp", -1).limit(3))
     print(status_list, flush=True)
-    return render_template("router_detail.html", router=router, status_list=status_list)
+    return render_template("router_detail.html", router=router
+                           , status_list=status_list)
 
 
 if __name__ == "__main__":
