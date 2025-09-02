@@ -1,26 +1,28 @@
 <html>
 <head>
-    <title>Sample app</title>
+    <title>Register Router</title>
     <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-    <h1>You are calling me from {{request.remote_addr}}</h1>
+    <h1>Register Router</h1>
     <form method="POST" action="/add">
-    <input name="ip" placeholder="IP" required />
-    <input name="username" placeholder="Username" required />
-    <input name="password" placeholder="Password" required />
+    IP:<input name="ip" required />
+    USERNAME:<input name="username" required />
+    PASSWORD:<input name="password" type="password" required />
     <button type="submit">Add</button>
   </form>
-  <h2>Guestbook</h2>
-
+  <h2>Routers List</h2>
   <ul>
     {% for comment in data %}
       <li>
-	       {{ comment.ip }} - {{ comment.username }}
-         <form method="POST" action="/delete/{{ comment._id }}" style="display:inline">
+           {{ comment.ip }} - {{ comment.username }}	 
+         <form method="POST" action="{{ url_for('delete_comment') }}" style="display:inline">
            <input type="hidden" name="idx" value="{{ loop.index0 }}">
            <button type="submit">Delete</button>
          </form>
+         <a href="{{ url_for('router_detail', ip=comment.ip) }}">
+           <button type="button">Detail</button>
+         </a>
       </li>
     {% endfor %}
   </ul>

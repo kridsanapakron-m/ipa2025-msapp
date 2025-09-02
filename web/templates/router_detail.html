@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>Router Detail</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <h1>Router Detail</h1>
+    <h2>Router Info</h2>
+    <ul>
+        <li>IP: {{ router.ip }}</li>
+        <li>Username: {{ router.username }}</li>
+    </ul>
+
+    <h2>Latest Interface Status</h2>
+    <table border="1">
+        <tr>
+            <th>Timestamp</th>
+            <th>Interface</th>
+            <th>IP Address</th>
+            <th>Status</th>
+            <th>Protocol</th>
+        </tr>
+        {% for status in status_list %}
+            {% for iface in status.interfaces %}
+            <tr>
+                <td>{{ status.timestamp }}</td>
+                <td>{{ iface.interface }}</td>
+                <td>{{ iface.ip_address }}</td>
+                <td>{{ iface.status }}</td>
+                <td>{{ iface.proto }}</td>
+            </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{{ url_for('main') }}">Back to Routers List</a>
+</body>
+</html>
