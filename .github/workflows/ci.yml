@@ -42,10 +42,10 @@ jobs:
 
     - name: Build & Push Docker Images
       run: |
-        docker build -t kridsanapakron-m/worker:latest ./worker
-        docker build -t kridsanapakron-m/scheduler:latest ./scheduler
-        docker build -t kridsanapakron-m/web:latest ./web
+        docker build -t kridsanapakron/worker:latest ./worker
+        docker build -t kridsanapakron/scheduler:latest ./scheduler
+        docker build -t kridsanapakron/web:latest ./web
 
-        docker push kridsanapakron-m/worker:latest
-        docker push kridsanapakron-m/scheduler:latest
-        docker push kridsanapakron-m/web:latest
+        docker push kridsanapakron/worker:latest
+        docker push kridsanapakron/scheduler:latest
+        docker push kridsanapakron/web:latest
