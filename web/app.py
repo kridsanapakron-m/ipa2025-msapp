@@ -55,7 +55,7 @@ def delete_comment():
 @sample.route("/router/<ip>")
 def router_detail(ip):
     router = mycol.find_one({"ip": ip})
-    status_list = list(mycol2.find({"router_ip": ip}).sort("timestamp", -1).limit(5))
+    status_list = list(mycol2.find({"router_ip": ip}).sort("timestamp", -1).limit(3))
     print(status_list, flush=True)
     return render_template("router_detail.html", router=router, status_list=status_list)
 
