@@ -15,6 +15,7 @@
   <ul>
     {% for comment in data %}
       <li>
+         {{ comment.ip }}
          <form method="GET" action="/router/{{ comment.ip }}" style="display:inline">
            <button type="submit">Detail</button>
          </form>
