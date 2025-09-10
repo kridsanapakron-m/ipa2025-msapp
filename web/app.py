@@ -12,22 +12,24 @@ data = []
 mongo_uri = os.environ.get("MONGO_URI")
 db_name = os.environ.get("DB_NAME")
 
-# ---- mongoDB ----
-# connect to mongo
 client = MongoClient(mongo_uri)
 mydb = client[db_name]
 mycol = mydb["routers"]
+interface = mydb["interface_status"]
 
 data = mycol.find()
-
-mycol2 = mydb["interface_status"]
-data2 = mycol2.find().sort("timestamp", -1).limit(3)
 
 
 @sample.route("/")
 def main():
     data = mycol.find()
     return render_template("index.html", data=data)
+
+
+@sample.route("/router/<router_ip>")
+def show_route(router_ip):
+    data = list(interface.find({"router_ip": router_ip}).sort("timestamp", -1).limit(5))
+    return render_template("router_detail.html", data=data)
 
 
 @sample.route("/add", methods=["POST"])
@@ -46,18 +48,11 @@ def add_comment():
 def delete_comment():
     try:
         idx = int(request.form.get("idx"))
-        mycol.delete_one({"_id": idx})
+        col = {"_id": data[idx]["_id"]}
+        mycol.delete_one(col)
     except Exception:
         pass
     return redirect(url_for("main"))
-
-
-@sample.route("/router/<ip>")
-def router_detail(ip):
-    router = mycol.find_one({"ip": ip})
-    status_list = list(mycol2.find({"router_ip": ip}).sort("timestamp", -1).limit(5))
-    print(status_list, flush=True)
-    return render_template("router_detail.html", router=router, status_list=status_list)
 
 
 if __name__ == "__main__":

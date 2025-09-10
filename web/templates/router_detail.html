@@ -1,38 +1,41 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Router Detail</title>
-    <link rel="stylesheet" href="/static/style.css" />
+  <meta charset="UTF-8" />
+  <title>Router Interfaces for {{ data[0].router_ip if data|length > 0 else '' }}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+
 </head>
 <body>
-    <h1>Router Detail</h1>
-    <h2>Router Info</h2>
-    <ul>
-        <li>IP: {{ router.ip }}</li>
-        <li>Username: {{ router.username }}</li>
-    </ul>
+  <h1>Router Interfaces for {{ data[0].router_ip if data|length > 0 else 'No Data' }}</h1>
 
-    <h2>Latest Interface Status</h2>
-    <table border="1">
+  {% if data|length == 0 %}
+    <p>No router data found.</p>
+  {% else %}
+    <table>
+      <thead>
         <tr>
-            <th>Timestamp</th>
-            <th>Interface</th>
-            <th>IP Address</th>
-            <th>Status</th>
-            <th>Protocol</th>
+          <th>Timestamp</th>
+          <th>Interface</th>
+          <th>IP Address</th>
+          <th>Status</th>
+          <th>Protocol</th>
         </tr>
-        {% for status in status_list %}
-            {% for iface in status.interfaces %}
+      </thead>
+      <tbody>
+        {% for record in data %}
+          {% for iface in record.interfaces %}
             <tr>
-                <td>{{ status.timestamp }}</td>
-                <td>{{ iface.interface }}</td>
-                <td>{{ iface.ip_address }}</td>
-                <td>{{ iface.status }}</td>
-                <td>{{ iface.proto }}</td>
+              <td>{{ record.timestamp }}</td>
+              <td>{{ iface.interface }}</td>
+              <td>{{ iface.ip_address }}</td>
+              <td>{{ iface.status }}</td>
+              <td>{{ iface.proto }}</td>
             </tr>
-            {% endfor %}
+          {% endfor %}
         {% endfor %}
+      </tbody>
     </table>
-    <br>
-    <a href="{{ url_for('main') }}">Back to Routers List</a>
+  {% endif %}
 </body>
 </html>
